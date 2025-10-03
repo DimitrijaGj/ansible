@@ -1,6 +1,9 @@
 ---
 - name: Prepare Dockerhost
   hosts: all
+  vars:
+    docker_users:
+      - dockerhost
   roles:
     - nginx
     - docker_install

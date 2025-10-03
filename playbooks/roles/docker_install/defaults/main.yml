@@ -1,0 +1,23 @@
+---
+# Docker packages to install
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+# Prerequisites
+docker_prerequisites:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+
+# Optional: Add user to docker group (leave empty if not needed)
+docker_users: []
+
+# Docker APT repository
+docker_apt_key_url: "https://download.docker.com/linux/debian/gpg"
+docker_apt_repository: "deb [arch=arm64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian trixie stable"
