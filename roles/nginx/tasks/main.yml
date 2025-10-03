@@ -1,0 +1,17 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Make sure nginx is running
+  service: nginx
+  state: started
+  enabled: yes
+
+- name: Remove default website if present
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart nginx
+
