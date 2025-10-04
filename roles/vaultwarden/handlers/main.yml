@@ -1,0 +1,8 @@
+---
+- name: restart vaultwarden
+  community.docker.docker_compose_v2:
+    project_src: "{{ vaultwarden_install_path }}"
+    state: restarted
+  become: true
+  become_user: "{{ vaultwarden_user }}"
+  

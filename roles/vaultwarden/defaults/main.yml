@@ -1,0 +1,6 @@
+---
+vaultwarden_user: "vaultwarden"
+vaultwarden_repo_url: "https://github.com/dani-garcia/vaultwarden.git"
+vaultwarden_install_path: "/opt/vaultwarden"
+vaultwarden_version: "latest"
+

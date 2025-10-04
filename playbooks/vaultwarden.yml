@@ -1,0 +1,8 @@
+---
+- name: Install Vaultwarden
+  hosts: all
+  roles:
+    - nginx
+    - docker_install
+    - vaultwarden
+  

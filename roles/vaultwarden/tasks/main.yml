@@ -1,0 +1,59 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - git
+      - acl
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Create Vaultwarden System Group
+  ansible.builtin.group:
+    name: "{{ vaultwarden_user }}"
+    state: present
+    system: yes
+  become: true
+
+- name: Create Vaultwarden system user
+  ansible.builtin.user:
+    name: "{{ vaultwarden_user }}"
+    path: "{{ vaultwarden_install_path }}"
+    state: present
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_user }}"
+    groups: docker
+    append: yes
+    system: yes
+    create_home: no
+    shell: /usr/sbin/nologin
+    comment: "Vaultwarden service user"
+
+  become: true
+
+- name: Create Vaultwarden Directory
+  ansible.builtin.git:
+    repo: "{{ vaultwarden_repo_url }}"
+    dest: "{{ vaultwarden_install_path }}"
+    version: "{{ vaultwarden_version }}"
+    state: directory
+    force: yes
+  become: true
+  become_user: "{{ vaultwarden_user }}"
+  register: git_clone
+
+- name: Check if docker-compose file exists
+  ansible.builtin.stat:
+    path: "{{ vaulwarden_install_path }}/docker-compose.yml"
+  register: compose_file
+
+- name: Run Dockercompose up
+  community.docker.docker_compose_v2:
+    project_src: "{{ vaultwarden_install_path }}"
+    state: present
+    pull: yes
+  become: true
+  become_user: "{{ vaultwarden_user }}"
+  when: compose_file.stat.exists
+  notify: restart_vaultwarden
+  
